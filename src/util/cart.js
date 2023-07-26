@@ -8,9 +8,8 @@ export function getCart() {
 export function addToCart(product) {
   const cart = getCart();
 
-  const existingProduct = cart.find((item) => {
-    item.id === product.sys.id;
-  });
+  const existingProduct = cart.find((item) => item.sys.id === product.sys.id);
+  console.log(existingProduct);
 
   if (existingProduct) {
     existingProduct.quantity += 1;
@@ -26,7 +25,7 @@ export function addToCart(product) {
 
 export function removeFromCart(productId) {
   let cart = getCart();
-  cart = cart.filter((item) => item.id !== productId);
+  cart = cart.filter((item) => item.sys.id !== productId);
   localStorage.setItem("cart", JSON.stringify(cart));
 }
 
@@ -36,8 +35,7 @@ export function clearCart() {
 
 export function updateQuantity(productId, quantity) {
   const cart = getCart();
-  const product = cart.find((item) => item.id === productId);
-
+  const product = cart.find((item) => item.sys.id === productId);
   if (product) {
     product.quantity = quantity;
     localStorage.setItem("cart", JSON.stringify(cart));

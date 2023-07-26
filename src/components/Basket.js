@@ -8,7 +8,10 @@ import { useState, useEffect } from "react";
 
 function Basket() {
   const [cartItems, setCartItems] = useState([]);
-
+  const handleClearCart = () => {
+    clearCart();
+    setCartItems([]);
+  };
   useEffect(() => {
     setCartItems(getCart());
     const updateCart = () => {
@@ -35,13 +38,17 @@ function Basket() {
     <main className="bg-gray-100 min-h-screen p-5">
       <h2 className="text-center text-3xl mb-6">Your Cart</h2>
 
+      {cartItems.length > 0 && (
+        <button className="bg-green-200 p-4 rounded" onClick={handleClearCart}>
+          Clear
+        </button>
+      )}
       {cartItems && cartItems.length > 0 ? (
-        cartItems.map((item) => (
+        cartItems.map((item, index) => (
           <div
             className="bg-white p-4 my-2 rounded shadow-md text-gray-700"
-            key={item.sys.id}
+            key={index}
           >
-            {console.log(item)}
             <h3 className="font-semibold text-xl mb-2">{item.fields.title}</h3>
             <div className="flex items-center">
               <input
