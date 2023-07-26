@@ -36,8 +36,11 @@ export default function Home({ products }) {
 
           <div className="grid grid-cols-2 gap-4">
             {products.map((product, index) => (
-              <Link href={`/${product.fields.title}`}>
-                <div key={index} className="border p-4">
+              <Link
+                key={index}
+                href={`/${product.fields.category}/${product.fields.title}`}
+              >
+                <div className="border p-4">
                   <img
                     className="w-full h-64 object-cover"
                     src={product.fields.image}
