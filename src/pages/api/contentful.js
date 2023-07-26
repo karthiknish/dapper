@@ -7,6 +7,10 @@ const client = createClient({
 
 export async function getProducts() {
   const data = await client.getEntries({ content_type: "dapper" });
-  console.log(data);
   return data.items;
+}
+export async function getProduct(sysID) {
+  console.log(sysID);
+  const product = await client.getEntry(sysID);
+  return product;
 }
