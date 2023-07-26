@@ -1,29 +1,73 @@
 import Link from "next/link";
 import Router from "next/router";
+import { useState, useEffect } from "react";
 import Search from "./Search";
 import Logo from "../assets/logo.png";
+import { signOut } from "../util/firebase";
+import {
+  AiOutlineMenu,
+  AiOutlineShoppingCart,
+  AiOutlineUser,
+} from "react-icons/ai";
+import { GoSignOut } from "react-icons/go";
 function Nav() {
+  const [isOpen, setIsOpen] = useState(false);
+  const [user, setUser] = useState(null);
+
+  const handleSignOut = async () => {
+    try {
+      await signOut();
+    } catch (error) {
+      console.error("Error during sign out:", error.message);
+    }
+  };
+  useEffect(() => {
+    const userData = localStorage.getItem("user");
+    if (userData) {
+      setUser(JSON.parse(userData));
+    }
+  }, []);
+
   return (
-    <nav className="flex justify-between items-center py-4 border-b">
+    <nav className="flex relative items-center justify-between p-4 bg-yellow-200 text-white">
       <img
         onClick={() => Router.push("/")}
-        width="13%"
-        className="ml-4"
+        width="150"
+        className="cursor-pointer"
         src={Logo.src}
+        alt="Logo"
       />
 
-      <div className="flex items-center">
+      <button
+        className="lg:hidden bg-black mr-2 absolute right-0 px-2 py-1"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <AiOutlineMenu className="text-2xl" />
+      </button>
+
+      <div
+        className={
+          !isOpen
+            ? "lg:flex hidden flex-grow mx-4"
+            : "z-20 absolute w-3/4 top-28 bg-black flex flex-col p-4 gap-4"
+        }
+      >
         <Search />
-        <div className="ml-4 flex items-center space-x-4">
-          <Link href="/products" className="text-blue-600 hover:underline">
+        <div className="flex items-center space-x-4">
+          <Link className="text-red-400 hover:underline" href="/products">
             Products
           </Link>
-          <Link href="/about" className="text-blue-600 hover:underline">
-            About
+          <Link href="/cart">
+            <AiOutlineShoppingCart className="text-2xl text-red-400" />
           </Link>
-          <Link href="/contact" className="text-blue-600 hover:underline">
-            Contact
-          </Link>
+
+          {user === null ? (
+            <Link href="/auth">
+              <AiOutlineUser className="text-2xl text-red-400" />
+            </Link>
+          ) : (
+            <GoSignOut onClick={handleSignOut} className="text-2xl" />
+          )}
         </div>
       </div>
     </nav>

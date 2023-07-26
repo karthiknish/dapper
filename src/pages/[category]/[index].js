@@ -4,6 +4,7 @@ import Router from "next/router";
 import { getProduct } from "../api/contentful";
 import StarRating from "../../components/Starrating";
 import Link from "next/link";
+import { IoChevronBackOutline } from "react-icons/io5";
 import {
   addToCart,
   getCart,
@@ -27,12 +28,8 @@ function Index({ product }) {
             className="bg-blue-600 text-white px-5 my-2 py-2 rounded hover:bg-blue-700 focus:outline-none"
             onClick={() => Router.push("/")}
           >
-            Go Back
+            <IoChevronBackOutline />
           </button>
-
-          <Link href="/cart" className="p-2 rounded bg-green-500 text-white">
-            View Cart
-          </Link>
 
           <img
             className="w-1/2 h-64 object-cover rounded-md mb-4"
