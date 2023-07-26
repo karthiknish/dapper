@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Head from "next/head";
 import { getProducts } from "./api/contentful";
+import Search from "../components/Search";
 export default function Home({ products }) {
   return (
     <>
@@ -8,29 +9,6 @@ export default function Home({ products }) {
         <title>Dapper</title>
       </Head>
       <div className="container mx-auto px-4">
-        <header className="flex justify-between items-center py-4">
-          <h1 className="text-2xl font-bold">Welcome to My E-commerce Site</h1>
-          <nav>
-            <Link
-              href="/products"
-              className="mx-2 text-blue-600 hover:underline"
-            >
-              Products
-            </Link>
-
-            <Link href="/about" className="mx-2 text-blue-600 hover:underline">
-              About
-            </Link>
-
-            <Link
-              href="/contact"
-              className="mx-2 text-blue-600 hover:underline"
-            >
-              Contact
-            </Link>
-          </nav>
-        </header>
-
         <main>
           <h2 className="text-xl font-semibold my-4">Featured Products</h2>
 

@@ -10,7 +10,7 @@ export async function getProducts() {
   return data.items;
 }
 export async function getProduct(sysID) {
-  console.log(sysID);
+
   const product = await client.getEntry(sysID);
   return product;
 }
