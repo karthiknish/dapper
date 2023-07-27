@@ -26,7 +26,7 @@ function Nav() {
   }, []);
 
   return (
-    <nav className="flex relative items-center justify-between p-4 bg-yellow-200 text-white">
+    <nav className="flex relative items-center justify-between p-4 bg-blue-100 text-white">
       <img
         onClick={() => Router.push("/")}
         width="150"
