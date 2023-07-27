@@ -3,14 +3,19 @@ export function getCart() {
     const cart = localStorage.getItem("cart");
     return cart ? JSON.parse(cart) : [];
   }
+  return [];
 }
+
 export function getCartTotal() {
   const cart = getCart();
+  if (!Array.isArray(cart)) {
+    console.error("Unexpected non-array value for cart:", cart);
+    return 0;
+  }
   return cart.reduce((total, item) => {
     return total + item.fields.price * item.quantity;
   }, 0);
 }
-  
 export function addToCart(product) {
   const cart = getCart();
 
