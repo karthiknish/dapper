@@ -5,6 +5,9 @@ import { register, signIn } from "../util/firebase";
 const Auth = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const [sex, setSex] = useState("");
   const [isLoginMode, setIsLoginMode] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -27,7 +30,7 @@ const Auth = () => {
       }
     } else {
       try {
-        await register(email, password);
+        await register(email, password, name, age, sex);
         alert("Account created successfully!");
       } catch (error) {
         setError(error.message);
@@ -39,6 +42,34 @@ const Auth = () => {
   return (
     <div className="w-full max-w-md mx-auto mt-5 px-6 py-4 shadow-md bg-white">
       <form className="space-y-4" onSubmit={submitHandler}>
+        {!isLoginMode && (
+          <>
+            <input
+              type="text"
+              placeholder="Name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded"
+            />
+            <input
+              type="number"
+              placeholder="Age"
+              value={age}
+              onChange={(e) => setAge(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded"
+            />
+            <select
+              value={sex}
+              onChange={(e) => setSex(e.target.value)}
+              className="w-full p-3 border border-gray-300 rounded"
+            >
+              <option value="">Select Sex</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+              <option value="other">Other</option>
+            </select>
+          </>
+        )}
         <input
           type="email"
           placeholder="Email"

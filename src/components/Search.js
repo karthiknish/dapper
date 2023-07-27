@@ -36,7 +36,7 @@ function Search() {
   return (
     <div className="relative flex-grow">
       <input
-        className="bg-transparent w-full"
+        className="bg-transparent lg:text-black w-full"
         type="text"
         value={query}
         onChange={(e) => setQuery(e.target.value)}
@@ -50,7 +50,7 @@ function Search() {
             href={`/${product.fields.category}/${product.sys.id}`}
           >
             <li
-              className="border border-gray-300 text-gray-700 text-2xl"
+              className="border border-gray-300 lg:text-gray-700 text-2xl"
               onClick={handleLinkClick}
             >
               {product.fields.title}

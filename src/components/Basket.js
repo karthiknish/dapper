@@ -5,7 +5,7 @@ import {
   clearCart,
 } from "../util/cart";
 import { useState, useEffect } from "react";
-
+import Router from "next/router";
 function Basket() {
   const [cartItems, setCartItems] = useState([]);
   const handleClearCart = () => {
@@ -39,9 +39,20 @@ function Basket() {
       <h2 className="text-center text-3xl mb-6">Your Cart</h2>
 
       {cartItems.length > 0 && (
-        <button className="bg-green-200 p-4 rounded" onClick={handleClearCart}>
-          Clear
-        </button>
+        <div className="flex gap-2">
+          <button
+            className="bg-green-200 p-2 rounded"
+            onClick={handleClearCart}
+          >
+            Clear Cart
+          </button>
+          <button
+            className="bg-blue-500 p-2 rounded"
+            onClick={() => Router.push("/checkout")}
+          >
+            Proceed to checkout
+          </button>
+        </div>
       )}
       {cartItems && cartItems.length > 0 ? (
         cartItems.map((item, index) => (
