@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { FaChartBar, FaBalanceScale } from "react-icons/fa";
-
+import Orders from "./orders";
 function index() {
   return (
     <div className="flex flex-col items-start space-y-4 p-8 bg-gray-100 min-h-screen">
@@ -24,6 +24,7 @@ function index() {
           </Link>
         </div>
       </div>
+      <Orders />
     </div>
   );
 }
