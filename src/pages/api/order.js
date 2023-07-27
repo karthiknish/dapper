@@ -90,6 +90,41 @@ async function submitOrder(email, order) {
     return { success: false, message: error.message };
   }
 }
+async function updateOrder(id, updatedOrder) {
+  await dbConnect();
+  try {
+    const user = await User.findOne({ "orders._id": id });
+    if (!user) {
+      return { success: false, message: "Order not found" };
+    }
+
+    const order = user.orders.id(id);
+    Object.assign(order, updatedOrder);
+
+    await user.save();
+    return { success: true };
+  } catch (error) {
+    console.error("Error updating the order:", error);
+    return { success: false, message: error.message };
+  }
+}
+async function deleteOrder(id) {
+  await dbConnect();
+  try {
+    const user = await User.findOne({ "orders._id": id });
+    if (!user) {
+      return { success: false, message: "Order not found" };
+    }
+    const order = user.orders.id(id);
+    console.log("Found order:", order);
+    order.deleteOne();
+    await user.save();
+    return { success: true };
+  } catch (error) {
+    console.error("Error deleting the order:", error);
+    return { success: false, message: error.message };
+  }
+}
 function aggregateByCampaign(orders) {
   let salesByCampaign = {};
 
@@ -152,6 +187,51 @@ export default async function handler(req, res) {
         }
       } catch (error) {
         console.error("Error while submitting order:", error);
+        res
+          .status(500)
+          .json({ message: "Server error", details: error.message });
+      }
+      break;
+    case "PUT":
+      const { id } = req.query;
+      const updatedOrder = req.body;
+      if (!id) {
+        res.status(400).json({ message: "Order ID is required for updating" });
+        return;
+      }
+      try {
+        const result = await updateOrder(id, updatedOrder);
+        if (result && result.success) {
+          res.status(200).json({ message: "Order updated successfully" });
+        } else {
+          res
+            .status(400)
+            .json({ message: result.message || "Order update failed" });
+        }
+      } catch (error) {
+        console.error("Error while updating order:", error);
+        res
+          .status(500)
+          .json({ message: "Server error", details: error.message });
+      }
+      break;
+    case "DELETE":
+      const orderId = req.query.id;
+      if (!orderId) {
+        res.status(400).json({ message: "Order ID is required for deletion" });
+        return;
+      }
+      try {
+        const result = await deleteOrder(orderId);
+        if (result && result.success) {
+          res.status(200).json({ message: "Order deleted successfully" });
+        } else {
+          res
+            .status(400)
+            .json({ message: result.message || "Order deletion failed" });
+        }
+      } catch (error) {
+        console.error("Error while deleting order:", error);
         res
           .status(500)
           .json({ message: "Server error", details: error.message });

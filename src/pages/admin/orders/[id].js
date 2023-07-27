@@ -1,10 +1,32 @@
-import React from "react";
+import Router from "next/router";
 function Id({ order }) {
+  const handleDelete = async () => {
+    try {
+      const response = await fetch(`/api/order?id=${order._id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to delete the order");
+      }
+
+      Router.push("/admin");
+    } catch (error) {
+      console.error("Error deleting the order:", error);
+      alert("There was an error deleting the order.");
+    }
+  };
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
       <h1 className="text-3xl font-bold mb-4">
         Order Details for {order.name}
       </h1>
+      <button
+        onClick={handleDelete}
+        className="px-4 py-2 bg-red-600 text-white rounded mt-4 hover:bg-red-700 active:bg-red-800 focus:outline-none"
+      >
+        Delete Order{" "}
+      </button>
       {order.cartItems.map((item, index) => (
         <div
           key={index}
