@@ -38,8 +38,9 @@ async function submitOrder(email, order) {
       console.log(item);
       totalPrice += item.fields.price * item.quantity;
     });
-    console.log(totalPrice);
+
     order.totalPrice = totalPrice;
+    order.campaignName = campaignName;
     const user = await User.findOne({ email });
     if (user) {
       user.orders.push(order);
@@ -89,7 +90,25 @@ async function submitOrder(email, order) {
     return { success: false, message: error.message };
   }
 }
+function aggregateByCampaign(orders) {
+  let salesByCampaign = {};
 
+  orders.forEach((order) => {
+    const campaign = order.campaignName;
+    const totalOrderValue = order.cartItems.reduce(
+      (acc, item) => acc + item.fields.price * item.quantity,
+      0
+    );
+
+    if (salesByCampaign[campaign]) {
+      salesByCampaign[campaign] += totalOrderValue;
+    } else {
+      salesByCampaign[campaign] = totalOrderValue;
+    }
+  });
+
+  return salesByCampaign;
+}
 export default async function handler(req, res) {
   switch (req.method) {
     case "GET":
@@ -120,9 +139,9 @@ export default async function handler(req, res) {
       break;
 
     case "POST":
-      const { email, order } = req.body;
+      const { email, order, campaignName } = req.body;
       try {
-        const result = await submitOrder(email, order);
+        const result = await submitOrder(email, order, campaignName);
         console.log(result);
         if (result && result.success) {
           res.status(200).json({ message: "Order submitted successfully" });
@@ -138,7 +157,18 @@ export default async function handler(req, res) {
           .json({ message: "Server error", details: error.message });
       }
       break;
-
+    case "GET_CAMPAIGN_DATA":
+      try {
+        const orders = await getOrders();
+        const campaignData = aggregateByCampaign(orders);
+        res.status(200).json(campaignData);
+      } catch (error) {
+        console.error("Error fetching campaign data:", error);
+        res
+          .status(500)
+          .json({ message: "Server error", details: error.message });
+      }
+      break;
     default:
       res.setHeader("Allow", ["GET", "POST"]);
       res.status(405).end(`Method ${req.method} Not Allowed`);

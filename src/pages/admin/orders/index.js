@@ -44,10 +44,11 @@ function Orders() {
               <tbody>
                 {orders.map((order, index) => (
                   <tr
+                    className="cursor-pointer"
                     onClick={() => Router.push(`/admin/orders/${order._id}`)}
                     key={index}
                   >
-                    {console.log(order)}
+                    {console.table(order)}
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       {index + 1}
                     </td>

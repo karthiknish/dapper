@@ -10,7 +10,6 @@ function SalesData() {
       const response = await fetch("/api/order");
       const data = await response.json();
       setOrders(data);
-      console.log(data);
     }
     loadData();
   }, []);
