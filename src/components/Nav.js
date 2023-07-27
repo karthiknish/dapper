@@ -54,6 +54,9 @@ function Nav() {
           <Link className="text-red-400 hover:underline" href="/products">
             Products
           </Link>
+          <Link className="text-red-400 hover:underline" href="/admin">
+            Admin
+          </Link>
           <Link href="/cart">
             <AiOutlineShoppingCart className="text-2xl text-red-400" />
           </Link>
