@@ -5,6 +5,8 @@ import {
   clearCart,
   getCartTotal,
 } from "../util/cart";
+import { FaShoppingCart, FaTrashAlt, FaArrowRight } from "react-icons/fa";
+
 import { useState, useEffect } from "react";
 import Router from "next/router";
 function Basket() {
@@ -38,29 +40,33 @@ function Basket() {
 
   return (
     <main className="bg-gray-100 min-h-screen p-5">
-      <h2 className="text-center text-3xl mb-6">Your Cart</h2>
+      <h2 className="text-center text-3xl mb-6">
+        <FaShoppingCart className="inline-block mr-2" /> Your Cart
+      </h2>
 
       {cartItems.length > 0 && (
         <div className="flex gap-2">
           <button
-            className="bg-green-200 p-2 rounded"
+            className="flex items-center bg-green-200 p-2 rounded"
             onClick={handleClearCart}
           >
             Clear Cart
           </button>
           <button
-            className="bg-blue-500 p-2 rounded"
+            className="flex items-center bg-blue-500 p-2 rounded text-white"
             onClick={() => Router.push("/checkout")}
           >
-            Proceed to checkout
+            Proceed to checkout <FaArrowRight className="ml-2" />
           </button>
         </div>
       )}
+
       {cartItems.length > 0 && (
         <h3 className="text-center text-2xl mb-6">
           Total: £{totalPrice.toFixed(2)}
         </h3>
       )}
+
       {cartItems && cartItems.length > 0 ? (
         cartItems.map((item, index) => (
           <div
@@ -76,16 +82,19 @@ function Basket() {
                 onChange={(e) => handleQuantityChange(item.sys.id, e)}
               />
               <button
-                className="bg-red-500 text-white ml-4 px-4 py-2 rounded hover:bg-red-600 transition"
+                className="flex items-center bg-red-500 text-white ml-4 px-4 py-2 rounded hover:bg-red-600 transition"
                 onClick={() => handleRemove(item.sys.id)}
               >
-                Remove
+                <FaTrashAlt className="mr-2" /> Remove
               </button>
             </div>
           </div>
         ))
       ) : (
-        <p className="text-center text-xl mt-5">Your cart is empty.</p>
+        <p className="text-center text-xl mt-5">
+          <FaShoppingCart className="text-gray-400 mr-2" size={24} /> Your cart
+          is empty.
+        </p>
       )}
     </main>
   );

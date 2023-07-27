@@ -7,6 +7,10 @@ const userSchema = new mongoose.Schema({
   password: String,
   age: Number,
   sex: String,
+  credits: {
+    type: Number,
+    default: 4000,
+  },
   addresses: [AddressSchema],
   orders: [OrderSchema],
 });

@@ -21,7 +21,7 @@ const OrderSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // This will add fields: createdAt and updatedAt
+    timestamps: true,
   }
 );
 

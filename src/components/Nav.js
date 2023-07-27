@@ -3,25 +3,24 @@ import Router from "next/router";
 import { useState, useEffect } from "react";
 import Search from "./Search";
 import Logo from "../assets/logo.png";
-
 import {
   AiOutlineMenu,
   AiOutlineShoppingCart,
   AiOutlineUser,
 } from "react-icons/ai";
-import { GoSignOut } from "react-icons/go";
+import { GoSignOut, GoSignIn } from "react-icons/go";
 function Nav() {
   const [isOpen, setIsOpen] = useState(false);
-  const [user, setUser] = useState(null);
+  const [token, setToken] = useState(null);
 
   const signOut = () => {
-    localStorage.removeItem("user");
+    localStorage.removeItem("token");
     Router.push("/");
   };
   useEffect(() => {
-    const userData = localStorage.getItem("user");
+    const userData = localStorage.getItem("token");
     if (userData) {
-      setUser(JSON.parse(userData));
+      setToken(userData);
     }
   }, []);
 
@@ -61,12 +60,18 @@ function Nav() {
             <AiOutlineShoppingCart className="text-2xl text-red-400" />
           </Link>
 
-          {user === null ? (
+          {token === null ? (
             <Link href="/auth">
-              <AiOutlineUser className="text-2xl text-red-400" />
+              <GoSignIn className="text-2xl text-red-400" />
             </Link>
           ) : (
-            <GoSignOut onClick={signOut} className="text-2xl" />
+            <>
+              <AiOutlineUser
+                onClick={() => Router.push("/account")}
+                className="text-2xl text-red-400"
+              />
+              <GoSignOut onClick={signOut} className="text-2xl text-red-400" />
+            </>
           )}
         </div>
       </div>

@@ -1,5 +1,13 @@
 import dbConnect from "../../util/dbConnect";
 import User from "../../models/User";
+function calculateTotalPrice(cartItems) {
+  const total = cartItems.reduce(
+    (acc, item) => acc + item.fields.price * item.quantity,
+    0
+  );
+  console.log(total);
+  return total;
+}
 async function getOrders() {
   try {
     await dbConnect();
@@ -30,19 +38,18 @@ async function getOrderById(id) {
     throw error;
   }
 }
-async function submitOrder(email, order) {
+async function submitOrder(email, order, campaignName) {
   await dbConnect();
   try {
-    let totalPrice = 0;
-    order.cartItems.forEach((item) => {
-      console.log(item);
-      totalPrice += item.fields.price * item.quantity;
-    });
-
-    order.totalPrice = totalPrice;
     order.campaignName = campaignName;
+    const totalPrice = calculateTotalPrice(order.cartItems);
+    order.totalPrice = totalPrice;
     const user = await User.findOne({ email });
     if (user) {
+      if (user.credits < totalPrice) {
+        return { success: false, message: "Insufficient credits." };
+      }
+      user.credits -= totalPrice;
       user.orders.push(order);
       const isAddressExists = user.addresses.some(
         (address) =>
@@ -116,7 +123,7 @@ async function deleteOrder(id) {
       return { success: false, message: "Order not found" };
     }
     const order = user.orders.id(id);
-    console.log("Found order:", order);
+
     order.deleteOne();
     await user.save();
     return { success: true };
@@ -149,7 +156,7 @@ export default async function handler(req, res) {
     case "GET":
       try {
         const { id } = req.query;
-        console.log(id);
+
         if (id) {
           const order = await getOrderById(id);
           if (!order) {
@@ -177,7 +184,7 @@ export default async function handler(req, res) {
       const { email, order, campaignName } = req.body;
       try {
         const result = await submitOrder(email, order, campaignName);
-        console.log(result);
+
         if (result && result.success) {
           res.status(200).json({ message: "Order submitted successfully" });
         } else {

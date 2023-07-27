@@ -44,30 +44,38 @@ function Orders() {
                     <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                       City
                     </th>
+                    <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
+                      Total
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {orders.map((order, index) => (
-                    <tr
-                      className="cursor-pointer"
-                      onClick={() => Router.push(`/admin/orders/${order._id}`)}
-                      key={index}
-                    >
-                      {console.table(order)}
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {index + 1}
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {order.name}
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {order.cartItems.length}
-                      </td>
-                      <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                        {order.city}
-                      </td>
-                    </tr>
-                  ))}
+                  {orders.length > 0 &&
+                    orders?.map((order, index) => (
+                      <tr
+                        className="cursor-pointer"
+                        onClick={() =>
+                          Router.push(`/admin/orders/${order._id}`)
+                        }
+                        key={index}
+                      >
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          {index + 1}
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          {order.name}
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          {order.cartItems.length}
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          {order.city}
+                        </td>
+                        <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
+                          £{order.totalPrice}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             )}

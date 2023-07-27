@@ -27,6 +27,20 @@ export default async function handler(req, res) {
     );
 
     res.status(200).json({ message: "Logged in successfully!", token, email });
+  }else if (req.method === "GET") {
+    const { email } = req.query;
+
+    if (!email) {
+      return res.status(400).json({ message: "Email query parameter is required." });
+    }
+
+    const user = await User.findOne({ email }, '-password');  
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+    res.status(200).json(user);
+
   } else {
     res.status(405).end();
   }

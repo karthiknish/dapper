@@ -61,13 +61,13 @@ export default function Home({ products }) {
       <Head>
         <title>Dapper</title>
       </Head>
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto px-4 py-8">
         <main>
-          <Slider className="mt-10" {...sliderSettings}>
+          <Slider className="mt-10 shadow-lg" {...sliderSettings}>
             {randomImages.map((img, index) => (
               <div key={index}>
                 <img
-                  className="w-full h-64 object-cover"
+                  className="w-full h-64 object-cover rounded-lg"
                   src={img}
                   alt={`Random Image ${index + 1}`}
                 />
@@ -75,37 +75,34 @@ export default function Home({ products }) {
             ))}
           </Slider>
 
-          <h2 className="text-2xl font-bold mt-8 mb-6">Featured Products</h2>
-          <div className="grid grid-cols-2 gap-4">
+          <h2 className="text-3xl font-semibold mt-12 mb-8">
+            Featured Products
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {products.map(
               (product, index) =>
                 product.fields.featured && (
                   <Link
                     key={index}
                     href={`/${product.fields.category}/${product.sys.id}`}
+                    className="group border p-4 cursor-pointer transform hover:scale-105 transition-transform duration-300 shadow-lg rounded-md"
                   >
-                    <div className="border p-4 cursor-pointer">
-                      <img
-                        className="w-full h-64 object-cover"
-                        src={product.fields.image}
-                        alt={product.fields.title}
-                      />
-                      <h3 className="mt-2 font-medium">
-                        {product.fields.title}
-                      </h3>
-                      <p className="text-green-600 font-semibold">
-                        £{product.fields.price}
-                      </p>
-                    </div>
+                    <img
+                      className="w-full h-64 object-cover rounded-md"
+                      src={product.fields.image}
+                      alt={product.fields.title}
+                    />
+                    <h3 className="mt-4 font-medium text-xl">
+                      {product.fields.title}
+                    </h3>
+                    <p className="text-green-600 font-semibold text-lg mt-2">
+                      £{product.fields.price}
+                    </p>
                   </Link>
                 )
             )}
           </div>
         </main>
-
-        <footer className="mt-4 py-4 border-t">
-          <p className="text-center">Copyright © 2023 E-commerce Site</p>
-        </footer>
       </div>
     </>
   );

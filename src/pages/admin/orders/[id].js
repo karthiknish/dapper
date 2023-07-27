@@ -25,8 +25,9 @@ function Id({ order }) {
         onClick={handleDelete}
         className="px-4 py-2 bg-red-600 text-white rounded mt-4 hover:bg-red-700 active:bg-red-800 focus:outline-none"
       >
-        Delete Order{" "}
+        Delete Order
       </button>
+      {console.log(order.totalPrice)}
       {order.cartItems.map((item, index) => (
         <div
           key={index}
@@ -40,8 +41,10 @@ function Id({ order }) {
           <div className="w-full md:w-1/2 space-y-4">
             <h2 className="text-xl font-semibold">{item.fields.title}</h2>
             <span className="text-lg font-medium">
-              ${item.fields.price.toFixed(2)}
+              £{item.fields.price.toFixed(2)}
             </span>
+            {"-"}
+            <span className="text-lg font-medium">{item.quantity}</span>
             <div className="mt-4">
               <h3 className="text-lg font-medium">Shipping Details:</h3>
               <address className="mt-2 not-italic">
