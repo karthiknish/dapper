@@ -15,6 +15,7 @@ function Nav() {
 
   const signOut = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("email");
     Router.push("/");
   };
   useEffect(() => {

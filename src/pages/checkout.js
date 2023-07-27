@@ -1,11 +1,15 @@
 import { getCart, clearCart } from "../util/cart";
 import { useState, useEffect } from "react";
+import Head from "next/head";
 import Router from "next/router";
 function Checkout() {
   const [cartItems, setCartItems] = useState([]);
+  const [user, setUser] = useState(null);
   const [address, setAddress] = useState({});
   const [formAddress, setFormAddress] = useState({});
   const [authenticated, setAuthenticated] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   useEffect(() => {
     const email = localStorage.getItem("email");
     if (!email) {
@@ -37,6 +41,32 @@ function Checkout() {
       .catch((error) => {
         console.error("Error fetching address:", error);
       });
+  }, []);
+  useEffect(() => {
+    const fetchUserDetails = async () => {
+      try {
+        const email = localStorage.getItem("email");
+        if (!email) {
+          setError("Email not found. Please login.");
+          return;
+        }
+
+        const response = await fetch(`/api/login?email=${email}`);
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch user details.");
+        }
+
+        const userData = await response.json();
+        setUser(userData);
+      } catch (err) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchUserDetails();
   }, []);
   const handleClearCart = () => {
     clearCart();
@@ -86,117 +116,131 @@ function Checkout() {
     }
   };
   return (
-    <div className="p-6">
-      <h1 className="text-2xl mb-4">Checkout</h1>
-      {cartItems.length > 0 &&
-        cartItems.map((item, index) => (
-          <div
-            className="bg-white p-4 my-2 flex items-center justify-between rounded shadow-md text-gray-700"
-            key={index}
-          >
-            <h3 className="font-semibold text-xl mb-2">{item.fields.title}</h3>
-            <div className="flex items-center">
-              <p className="border p-2 w-16">{item.quantity}</p>
+    <>
+      <Head>
+        <title>Checkout</title>
+      </Head>
+      <div className="p-6">
+        <h1 className="text-2xl mb-4">Checkout</h1>
+        {cartItems.length > 0 &&
+          cartItems.map((item, index) => (
+            <div
+              className="bg-white p-4 my-2 flex items-center justify-between rounded shadow-md text-gray-700"
+              key={index}
+            >
+              <h3 className="font-semibold text-xl mb-2">
+                {item.fields.title}
+              </h3>
+              <div className="flex items-center">
+                <p className="border p-2 w-16">{item.quantity}</p>
+              </div>
+            </div>
+          ))}
+        {user && (
+          <div>
+            <div className="mb-4 flex justify-between">
+              <span className="font-medium">Credits:</span>
+              <span>{user.credits}</span>
             </div>
           </div>
-        ))}
-      {console.log(address)}
-      {address && address.addressLine1 && (
-        <div
-          className="bg-blue-100 p-4 my-4 rounded shadow-md cursor-pointer hover:bg-blue-200"
-          onClick={autofillAddress}
-        >
-          <p>
-            <strong>Saved Address:</strong>
-          </p>
-          <p>{address.name}</p>
-          <p>{address.addressLine1}</p>
-          {address.addressLine2 && <p>{address.addressLine2}</p>}
-          <p>{address.city}</p>
-          <p>{address.state}</p>
-          <p>{address.zip}</p>
-          <p>{address.phone}</p>
-          <p className="text-sm italic">Click to autofill</p>
-        </div>
-      )}
-      <form onSubmit={handleOrderSubmission}>
-        <input
-          type="text"
-          placeholder="Full Name"
-          value={formAddress.name || ""}
-          onChange={(e) =>
-            setFormAddress({ ...formAddress, name: e.target.value })
-          }
-          className="border rounded p-2 my-2 w-full"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Address Line 1"
-          value={formAddress.addressLine1 || ""}
-          onChange={(e) =>
-            setFormAddress({ ...formAddress, addressLine1: e.target.value })
-          }
-          className="border rounded p-2 my-2 w-full"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Address Line 2"
-          value={formAddress.addressLine2 || ""}
-          onChange={(e) =>
-            setFormAddress({ ...formAddress, addressLine2: e.target.value })
-          }
-          className="border rounded p-2 my-2 w-full"
-        />
-        <input
-          type="text"
-          placeholder="City"
-          value={formAddress.city || ""}
-          onChange={(e) =>
-            setFormAddress({ ...formAddress, city: e.target.value })
-          }
-          className="border rounded p-2 my-2 w-full"
-          required
-        />
-        <input
-          type="text"
-          placeholder="State"
-          value={formAddress.state || ""}
-          onChange={(e) =>
-            setFormAddress({ ...formAddress, state: e.target.value })
-          }
-          className="border rounded p-2 my-2 w-full"
-          required
-        />
-        <input
-          type="text"
-          placeholder="Zip Code"
-          value={formAddress.zip || ""}
-          onChange={(e) =>
-            setFormAddress({ ...formAddress, zip: e.target.value })
-          }
-          className="border rounded p-2 my-2 w-full"
-          required
-        />
-        <input
-          type="tel"
-          placeholder="Phone Number"
-          value={formAddress.phone || ""}
-          onChange={(e) =>
-            setFormAddress({ ...formAddress, phone: e.target.value })
-          }
-          className="border rounded p-2 my-2 w-full"
-          required
-        />
-        <button
-          type="submit"
-          className="mt-6 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-        >
-          Confirm Order
-        </button>
-      </form>
-    </div>
+        )}
+        {address && address.addressLine1 && (
+          <div
+            className="bg-blue-100 p-4 my-4 rounded shadow-md cursor-pointer hover:bg-blue-200"
+            onClick={autofillAddress}
+          >
+            <p>
+              <strong>Saved Address:</strong>
+            </p>
+            <p>{address.name}</p>
+            <p>{address.addressLine1}</p>
+            {address.addressLine2 && <p>{address.addressLine2}</p>}
+            <p>{address.city}</p>
+            <p>{address.state}</p>
+            <p>{address.zip}</p>
+            <p>{address.phone}</p>
+            <p className="text-sm italic">Click to autofill</p>
+          </div>
+        )}
+        <form onSubmit={handleOrderSubmission}>
+          <input
+            type="text"
+            placeholder="Full Name"
+            value={formAddress.name || ""}
+            onChange={(e) =>
+              setFormAddress({ ...formAddress, name: e.target.value })
+            }
+            className="border rounded p-2 my-2 w-full"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Address Line 1"
+            value={formAddress.addressLine1 || ""}
+            onChange={(e) =>
+              setFormAddress({ ...formAddress, addressLine1: e.target.value })
+            }
+            className="border rounded p-2 my-2 w-full"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Address Line 2"
+            value={formAddress.addressLine2 || ""}
+            onChange={(e) =>
+              setFormAddress({ ...formAddress, addressLine2: e.target.value })
+            }
+            className="border rounded p-2 my-2 w-full"
+          />
+          <input
+            type="text"
+            placeholder="City"
+            value={formAddress.city || ""}
+            onChange={(e) =>
+              setFormAddress({ ...formAddress, city: e.target.value })
+            }
+            className="border rounded p-2 my-2 w-full"
+            required
+          />
+          <input
+            type="text"
+            placeholder="State"
+            value={formAddress.state || ""}
+            onChange={(e) =>
+              setFormAddress({ ...formAddress, state: e.target.value })
+            }
+            className="border rounded p-2 my-2 w-full"
+            required
+          />
+          <input
+            type="text"
+            placeholder="Zip Code"
+            value={formAddress.zip || ""}
+            onChange={(e) =>
+              setFormAddress({ ...formAddress, zip: e.target.value })
+            }
+            className="border rounded p-2 my-2 w-full"
+            required
+          />
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            value={formAddress.phone || ""}
+            onChange={(e) =>
+              setFormAddress({ ...formAddress, phone: e.target.value })
+            }
+            className="border rounded p-2 my-2 w-full"
+            required
+          />
+          <button
+            type="submit"
+            className="mt-6 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+          >
+            Confirm Order
+          </button>
+        </form>
+      </div>
+    </>
   );
 }
 
