@@ -3,7 +3,7 @@ import Router from "next/router";
 import { useState, useEffect } from "react";
 import Search from "./Search";
 import Logo from "../assets/logo.png";
-import { signOut } from "../util/firebase";
+
 import {
   AiOutlineMenu,
   AiOutlineShoppingCart,
@@ -14,12 +14,9 @@ function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const [user, setUser] = useState(null);
 
-  const handleSignOut = async () => {
-    try {
-      await signOut();
-    } catch (error) {
-      console.error("Error during sign out:", error.message);
-    }
+  const signOut = () => {
+    localStorage.removeItem("user");
+    Router.push("/");
   };
   useEffect(() => {
     const userData = localStorage.getItem("user");
@@ -66,7 +63,7 @@ function Nav() {
               <AiOutlineUser className="text-2xl text-red-400" />
             </Link>
           ) : (
-            <GoSignOut onClick={handleSignOut} className="text-2xl" />
+            <GoSignOut onClick={signOut} className="text-2xl" />
           )}
         </div>
       </div>

@@ -1,24 +1,25 @@
 import { Bar } from "react-chartjs-2";
 import { Chart, registerables } from "chart.js";
 import { useState, useEffect } from "react";
-import fetchOrders from "../../util/fetchOrders";
+
 Chart.register(...registerables);
 function SalesData() {
   const [orders, setOrders] = useState([]);
   useEffect(() => {
     async function loadData() {
-      const allOrders = await fetchOrders();
-
-      setOrders(allOrders);
+      const response = await fetch("/api/order");
+      const data = await response.json();
+      setOrders(data);
+      console.log(data);
     }
     loadData();
   }, []);
   function aggregateSalesData(orders) {
     let salesByCategory = {};
     orders.forEach((order) => {
-      order.cartItems.forEach((order) => {
-        const category = order?.fields?.category[0];
-        const price = order?.fields?.price;
+      order.cartItems.forEach((item) => {
+        const category = item?.fields?.category[0];
+        const price = item?.fields?.price;
         if (salesByCategory[category]) {
           salesByCategory[category] += price;
         } else {
@@ -45,7 +46,6 @@ function SalesData() {
       },
     ],
   };
-
   return (
     <div>
       <h2>Sales Data Over Time</h2>

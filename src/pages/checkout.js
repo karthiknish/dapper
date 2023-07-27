@@ -1,13 +1,43 @@
 import { getCart, clearCart } from "../util/cart";
 import { useState, useEffect } from "react";
-import { db } from "../util/firebase";
-import { collection, addDoc, query, where, getDocs } from "firebase/firestore";
 import Router from "next/router";
 function Checkout() {
   const [cartItems, setCartItems] = useState([]);
   const [address, setAddress] = useState({});
   const [formAddress, setFormAddress] = useState({});
+  const [authenticated, setAuthenticated] = useState(false);
+  useEffect(() => {
+    const email = localStorage.getItem("email");
+    if (!email) {
+      Router.push("/auth");
+      return;
+    }
+    setAuthenticated(true);
 
+    const userCart = getCart();
+    if (userCart.length === 0) {
+      Router.push("/");
+      return;
+    }
+    setCartItems(userCart);
+
+    fetch("/api/address", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ email }),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.address) {
+          setAddress(data.address);
+        }
+      })
+      .catch((error) => {
+        console.error("Error fetching address:", error);
+      });
+  }, []);
   const handleClearCart = () => {
     clearCart();
     setCartItems([]);
@@ -16,29 +46,11 @@ function Checkout() {
     setFormAddress(address);
   };
 
-  useEffect(() => {
-    const userData = localStorage.getItem("user");
-    if (!userData) {
-      Router.push("/auth");
-      return;
-    }
-    const userCart = getCart();
-    if (userCart.length === 0) {
-      Router.push("/");
-      return;
-    }
-    setCartItems(userCart);
-    const userEmail = JSON.parse(userData).email;
-    getAddressByEmail(userEmail).then((fetchedAddress) => {
-      setAddress(fetchedAddress);
-    });
-  }, []);
   const handleOrderSubmission = async (e) => {
     e.preventDefault();
 
     const { target } = e;
-    const userData = localStorage.getItem("user");
-    const userEmail = userData ? JSON.parse(userData).email : null;
+    const email = localStorage.getItem("email");
 
     const order = {
       name: target[0].value,
@@ -49,33 +61,28 @@ function Checkout() {
       zip: target[5].value,
       phone: target[6].value,
       cartItems: cartItems,
-      email: userEmail,
+      email,
     };
 
     try {
-      await addDoc(collection(db, "users", userEmail, "orders"), order).then(
-        () => handleClearCart()
-      );
-      alert("Order successfully submitted!");
+      const response = await fetch("/api/order", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, order }),
+      });
+      const data = await response.json();
+      console.log(data);
+      if (data.message === "Order submitted successfully") {
+        handleClearCart();
+        alert("Order successfully submitted!");
+      } else {
+        throw new Error(data.message);
+      }
     } catch (error) {
       console.error("There was an error submitting the order:", error);
       alert("There was an error submitting your order. Please try again.");
-    }
-
-    try {
-      await addDoc(collection(db, "users", userEmail, "addresses"), {
-        address: {
-          name: order.name,
-          addressLine1: order.addressLine1,
-          addressLine2: order.addressLine2,
-          city: order.city,
-          state: order.state,
-          zip: order.zip,
-          phone: order.phone,
-        },
-      });
-    } catch (error) {
-      console.error("There was an error saving the address:", error);
     }
   };
   return (
@@ -192,23 +199,5 @@ function Checkout() {
     </div>
   );
 }
-async function getAddressByEmail(email) {
-  try {
-    // Create a query against the subcollection
-    const addressQuery = query(collection(db, "users", email, "addresses"));
 
-    const querySnapshot = await getDocs(addressQuery);
-
-    if (!querySnapshot.empty) {
-      const docData = querySnapshot.docs[0].data();
-      return docData.address;
-    } else {
-      console.warn(`No address found for email: ${email}`);
-      return {};
-    }
-  } catch (error) {
-    console.error("Error fetching address:", error);
-    return {};
-  }
-}
 export default Checkout;

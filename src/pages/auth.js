@@ -1,6 +1,5 @@
 import Router from "next/router";
-import React, { useState } from "react";
-import { register, signIn } from "../util/firebase";
+import { useState } from "react";
 
 const Auth = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +12,7 @@ const Auth = () => {
   const [error, setError] = useState(null);
 
   const switchModeHandler = () => {
-    setError(null); // Clear errors on mode switch
+    setError(null);
     setIsLoginMode((prevMode) => !prevMode);
   };
 
@@ -21,20 +20,36 @@ const Auth = () => {
     event.preventDefault();
     setIsLoading(true);
     setError(null);
+    const url = isLoginMode ? "/api/login" : "/api/register";
+    const payload = isLoginMode
+      ? { email, password }
+      : { email, password, name, age, sex };
+    try {
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(payload),
+      });
 
-    if (isLoginMode) {
-      try {
-        await signIn(email, password).then(() => Router.push("/"));
-      } catch (error) {
-        setError(error.message);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Something went wrong!");
       }
-    } else {
-      try {
-        await register(email, password, name, age, sex);
+
+      if (isLoginMode) {
+        if (data.token) {
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("email", data.email);
+        }
+        Router.push("/");
+      } else {
         alert("Account created successfully!");
-      } catch (error) {
-        setError(error.message);
       }
+    } catch (error) {
+      setError(error.message);
     }
     setIsLoading(false);
   };
