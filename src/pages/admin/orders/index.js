@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-
+import Router from "next/router";
 function Orders() {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -34,7 +34,7 @@ function Orders() {
                     Name
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
-                    Product
+                    Products
                   </th>
                   <th className="px-5 py-3 border-b-2 border-gray-200 bg-gray-100 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
                     City
@@ -43,7 +43,11 @@ function Orders() {
               </thead>
               <tbody>
                 {orders.map((order, index) => (
-                  <tr key={index}>
+                  <tr
+                    onClick={() => Router.push(`/admin/orders/${order._id}`)}
+                    key={index}
+                  >
+                    {console.log(order)}
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       {index + 1}
                     </td>
@@ -51,7 +55,7 @@ function Orders() {
                       {order.name}
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
-                      {order.cartItems[0]?.fields.title}
+                      {order.cartItems.length}
                     </td>
                     <td className="px-5 py-5 border-b border-gray-200 bg-white text-sm">
                       {order.city}

@@ -3,11 +3,13 @@ import {
   removeFromCart,
   updateQuantity,
   clearCart,
+  getCartTotal,
 } from "../util/cart";
 import { useState, useEffect } from "react";
 import Router from "next/router";
 function Basket() {
   const [cartItems, setCartItems] = useState([]);
+  const totalPrice = getCartTotal();
   const handleClearCart = () => {
     clearCart();
     setCartItems([]);
@@ -53,6 +55,11 @@ function Basket() {
             Proceed to checkout
           </button>
         </div>
+      )}
+      {cartItems.length > 0 && (
+        <h3 className="text-center text-2xl mb-6">
+          Total: £{totalPrice.toFixed(2)}
+        </h3>
       )}
       {cartItems && cartItems.length > 0 ? (
         cartItems.map((item, index) => (

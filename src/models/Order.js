@@ -15,6 +15,10 @@ const OrderSchema = new mongoose.Schema(
       type: Date,
       default: Date.now,
     },
+    totalPrice: {
+      type: Number,
+      required: true,
+    },
   },
   {
     timestamps: true, // This will add fields: createdAt and updatedAt

@@ -4,7 +4,13 @@ export function getCart() {
     return cart ? JSON.parse(cart) : [];
   }
 }
-
+export function getCartTotal() {
+  const cart = getCart();
+  return cart.reduce((total, item) => {
+    return total + item.fields.price * item.quantity;
+  }, 0);
+}
+  
 export function addToCart(product) {
   const cart = getCart();
 
