@@ -6,6 +6,12 @@
 *:focus {
   outline: none;
 }
+p{
+  font-family: 'Montserrat', sans-serif;
+}
+nav{
+  font-family: 'REM', sans-serif;
+}
 body {
   color: rgb(var(--foreground-rgb));
   background: linear-gradient(

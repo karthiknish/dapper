@@ -8,11 +8,63 @@ import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
 
 export default function Home({ products }) {
   const [showSplash, setShowSplash] = useState(true);
+  const [email, setEmail] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+  const storiesData = [
+    {
+      id: 1,
+      name: "Jack Cook",
+      avatar:
+        "https://images.pexels.com/photos/45982/pexels-photo-45982.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      review: "I absolutely love this product. It has changed my life!",
+      productUsed: "Product A",
+    },
+    {
+      id: 2,
+      name: "Jane Smith",
+      avatar:
+        "https://images.pexels.com/photos/179909/pexels-photo-179909.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      review: "This is a must-have for anyone. Best purchase I made this year.",
+      productUsed: "Product B",
+    },
+    {
+      id: 3,
+      name: "Sara Paul",
+      avatar:
+        "https://images.pexels.com/photos/17751042/pexels-photo-17751042.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      review: "This is a must-have for anyone. Best purchase I made this year.",
+      productUsed: "Product B",
+    },
+    {
+      id: 4,
+      name: "Claire Jose",
+      avatar:
+        "https://images.pexels.com/photos/1152077/pexels-photo-1152077.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      review: "Rate this high.",
+      productUsed: "Product B",
+    },
+    {
+      id: 5,
+      name: "Warner Spencer",
+      avatar:
+        "https://images.pexels.com/photos/2529157/pexels-photo-2529157.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2",
+      review: "Perfect sizing and colorful products",
+      productUsed: "Product B",
+    },
+  ];
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (email) {
+      setSubmitted(true);
+    } else {
+      alert("Please enter a valid email address");
+    }
+  };
   function SamplePrevArrow(props) {
     const { onClick } = props;
     return (
-      <div className="slick-prev" onClick={onClick}>
-        <FaArrowLeft />
+      <div className="slick-prev " onClick={onClick}>
+        <FaArrowLeft className="" />
       </div>
     );
   }
@@ -41,13 +93,6 @@ export default function Home({ products }) {
     prevArrow: <SamplePrevArrow />,
   };
 
-  // Sample random images for the slider.
-  const randomImages = [
-    "https://img.freepik.com/free-psd/black-friday-super-sale-facebook-cover-template_106176-1539.jpg?w=1480&t=st=1690464786~exp=1690465386~hmac=be3cd1b5b45ecf8dda989996d2edb0c6a076ff146a8ce6defc738b86334f6670",
-    "https://img.freepik.com/free-psd/black-friday-super-sale-facebook-cover-template_120329-2087.jpg?w=1480&t=st=1690464762~exp=1690465362~hmac=d88b3f71e5b9b29578d3c1059ab4c534177fb42ad42547fcb87a2818a631d9a7",
-    "https://img.freepik.com/free-psd/new-collection-fashion-sale-web-banner-template_120329-1507.jpg?w=1800&t=st=1690464734~exp=1690465334~hmac=f65d50806b0b09ce4b641c829ef4042b5d27aff9afe3a5c63826917a275cc77f",
-  ];
-
   if (showSplash) {
     return (
       <div className="fixed z-50 bg-blue-200 inset-0 flex items-center justify-center">
@@ -60,25 +105,88 @@ export default function Home({ products }) {
     <>
       <Head>
         <title>Dapper</title>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500&display=swap"
+          rel="stylesheet"
+        />
+        <style jsx global>{`
+          body {
+            font-family: "Poppins", sans-serif;
+          }
+        `}</style>
       </Head>
+      <div className="flex flex-wrap">
+        {/* Desktop Layout */}
+        <div className="hidden md:flex md:w-1/2">
+          <div
+            className="relative w-full h-screen bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "url(https://images.pexels.com/photos/1306248/pexels-photo-1306248.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)",
+            }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Link
+                href="/mens"
+                className="text-xl bg-white py-2 px-4 rounded-md hover:bg-gray-200"
+              >
+                Shop Men
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="hidden md:flex md:w-1/2">
+          <div
+            className="relative w-full h-screen bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "url(https://images.pexels.com/photos/5848886/pexels-photo-5848886.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)",
+            }}
+          >
+            <div className="absolute inset-0 flex items-center justify-center">
+              <Link
+                href="/womens"
+                className="text-xl bg-white py-2 px-4 rounded-md hover:bg-gray-200"
+              >
+                Shop Women
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div className="md:hidden w-full">
+          <div
+            className="relative w-full h-screen bg-cover bg-center"
+            style={{
+              backgroundImage:
+                "url(https://images.pexels.com/photos/17279480/pexels-photo-17279480/free-photo-of-elegant-couple-posing-in-the-harbor.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2)",
+            }}
+          >
+            <div className="absolute inset-8 mt-20 flex items-center justify-center gap-4">
+              <Link
+                href="/shop/men"
+                className="text-xl bg-white py-2 px-4 rounded-md hover:bg-gray-200"
+              >
+                Shop Men
+              </Link>
+
+              <Link
+                href="/shop/women"
+                className="text-xl bg-white py-2 px-4 rounded-md hover:bg-gray-200"
+              >
+                Shop Women
+              </Link>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="container mx-auto px-4 py-8">
         <main>
-          <Slider className="mt-10 shadow-lg" {...sliderSettings}>
-            {randomImages.map((img, index) => (
-              <div key={index}>
-                <img
-                  className="w-full h-64 object-cover rounded-lg"
-                  src={img}
-                  alt={`Random Image ${index + 1}`}
-                />
-              </div>
-            ))}
-          </Slider>
-
           <h2 className="text-3xl font-semibold mt-12 mb-8">
             Featured Products
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             {products.map(
               (product, index) =>
                 product.fields.featured && (
@@ -103,6 +211,52 @@ export default function Home({ products }) {
             )}
           </div>
         </main>
+      </div>
+      <div className="bg-gray-100 p-6 rounded-md shadow-md w-full  mx-auto">
+        <h2 className="font-semibold text-lg mb-6 text-center">
+          Customer Stories
+        </h2>
+
+        <Slider {...sliderSettings}>
+          {storiesData.map((story) => (
+            <div
+              key={story.id}
+              className="w-full h-full bg-white rounded-md p-4 shadow-md"
+            >
+              <img
+                src={story.avatar}
+                alt={story.name}
+                className="w-full h-40 rounded-md object-cover mb-4"
+              />
+              <p className="font-medium">{story.name}</p>
+              <p className="text-sm text-gray-500 truncate">{story.review}</p>
+            </div>
+          ))}
+        </Slider>
+      </div>
+      <div className="bg-gray-100 p-6 rounded-md shadow-md w-full mt-5 mx-auto">
+        <h2 className="font-semibold text-lg mb-4">Join our Newsletter</h2>
+        {!submitted ? (
+          <form onSubmit={handleSubmit}>
+            <div className="flex items-center gap-2">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                className="flex-grow p-2 rounded-md border focus:border-blue-500 focus:ring-1 focus:ring-blue-200 transition"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <button
+                type="submit"
+                className="bg-blue-600 text-white p-2 rounded hover:bg-blue-700 transition"
+              >
+                Sign Up
+              </button>
+            </div>
+          </form>
+        ) : (
+          <p>Thank you for subscribing!</p>
+        )}
       </div>
     </>
   );

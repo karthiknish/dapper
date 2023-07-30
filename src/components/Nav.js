@@ -1,12 +1,13 @@
 import Link from "next/link";
 import Router from "next/router";
 import { useState, useEffect } from "react";
-import Search from "./Search";
+
 import Logo from "../assets/logo.png";
 import {
   AiOutlineMenu,
   AiOutlineShoppingCart,
   AiOutlineUser,
+  AiOutlineSearch,
 } from "react-icons/ai";
 import { GoSignOut, GoSignIn } from "react-icons/go";
 function Nav() {
@@ -26,7 +27,7 @@ function Nav() {
   }, []);
 
   return (
-    <nav className="flex relative items-center justify-between p-4 bg-blue-100 text-white">
+    <nav className="flex relative items-center justify-between p-2 bg-blue-100 text-white">
       <img
         onClick={() => Router.push("/")}
         width="150"
@@ -45,15 +46,17 @@ function Nav() {
       <div
         className={
           !isOpen
-            ? "lg:flex hidden flex-grow mx-4"
-            : "z-20 absolute w-3/4 top-28 bg-black flex flex-col p-4 gap-4"
+            ? "lg:flex hidden flex-grow mx-4 right-0 absolute"
+            : "z-20 absolute w-3/4  top-28 bg-black flex flex-col p-4 gap-4"
         }
       >
-        <Search />
+        <Link href="/search">
+          <AiOutlineSearch
+            className="text-red-400 text-2xl mr-2 hover:underline"
+            href="/search"
+          />
+        </Link>
         <div className="flex items-center space-x-4">
-          <Link className="text-red-400 hover:underline" href="/products">
-            Products
-          </Link>
           <Link className="text-red-400 hover:underline" href="/admin">
             Admin
           </Link>

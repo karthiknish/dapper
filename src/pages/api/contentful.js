@@ -5,19 +5,27 @@ const client = createClient({
   accessToken: process.env.NEXT_PUBLIC_CONTENTFUL_ACCESS_TOKEN,
 });
 
-export async function getProducts(category, sortOrder = "asc") {
+export async function getProducts(category, sortOrder = "asc", gender) {
   let query = { content_type: "dapper" };
+
   if (category) {
     query["fields.category"] = category;
   }
+
+  if (gender) {
+    query["fields.gender"] = gender;
+  }
+
   if (sortOrder === "asc") {
     query.order = "fields.price";
   } else if (sortOrder === "desc") {
     query.order = "-fields.price";
   }
+
   const data = await client.getEntries(query);
   return data.items;
 }
+
 export async function getProduct(sysID) {
 
   const product = await client.getEntry(sysID);
