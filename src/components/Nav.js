@@ -27,22 +27,30 @@ function Nav() {
   }, []);
 
   return (
-    <nav className="flex relative items-center justify-between p-2 bg-blue-100 text-white">
-      <img
-        onClick={() => Router.push("/")}
-        width="150"
-        className="cursor-pointer"
-        src={Logo.src}
-        alt="Logo"
-      />
-
+    <nav className="flex relative items-center justify-center p-2 bg-blue-100 text-white">
+      <div className=" absolute hidden lg:flex left-0 ml-4 gap-2">
+        <Link className="text-red-400  mr-2 hover:underline" href="/mens">
+          Mens
+        </Link>
+        <Link className="text-red-400  mr-2 hover:underline" href="/womens">
+          Womens
+        </Link>
+      </div>
+      <div>
+        <img
+          onClick={() => Router.push("/")}
+          width="150"
+          className="cursor-pointer"
+          src={Logo.src}
+          alt="Logo"
+        />
+      </div>
       <button
         className="lg:hidden bg-black mr-2 absolute right-0 px-2 py-1"
         onClick={() => setIsOpen(!isOpen)}
       >
         <AiOutlineMenu className="text-2xl" />
       </button>
-
       <div
         className={
           !isOpen
