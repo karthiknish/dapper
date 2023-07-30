@@ -116,7 +116,6 @@ export default function Home({ products }) {
         `}</style>
       </Head>
       <div className="flex flex-wrap">
-        {/* Desktop Layout */}
         <div className="hidden md:flex md:w-1/2">
           <div
             className="relative w-full h-screen bg-cover bg-center"
@@ -234,7 +233,7 @@ export default function Home({ products }) {
           ))}
         </Slider>
       </div>
-      <div className="bg-gray-100 p-6 rounded-md shadow-md w-full mt-5 mx-auto">
+      <div className="bg-gray-100 p-6 rounded-md shadow-md w-full  mx-auto">
         <h2 className="font-semibold text-lg mb-4">Join our Newsletter</h2>
         {!submitted ? (
           <form onSubmit={handleSubmit}>
