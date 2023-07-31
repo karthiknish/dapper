@@ -1,5 +1,5 @@
 import dbConnect from "../../util/dbConnect";
-import Campaign from "../../models/Campaign"; // Assuming you have a Campaign model
+import Campaign from "../../models/Campaign";
 
 export default async function handler(req, res) {
   await dbConnect();
