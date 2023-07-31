@@ -26,7 +26,6 @@ export default function Document() {
             src="https://www.facebook.com/tr?id=1285986808472620&ev=PageView&noscript=1"
           />
         </noscript>
-
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link
           rel="preconnect"
@@ -36,12 +35,6 @@ export default function Document() {
         <link
           href="https://fonts.googleapis.com/css2?family=Montserrat&display=swap"
           rel="stylesheet"
-        />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin={true}
         />
         <link
           href="https://fonts.googleapis.com/css2?family=REM&display=swap"
