@@ -8,10 +8,6 @@ function Index({ products }) {
   const [displayedProducts, setDisplayedProducts] = useState(products);
   const [searchQuery, setSearchQuery] = useState("");
   const [gender, setGender] = useState("");
-
-  useEffect(() => {
-    fetchProducts();
-  }, [category, sortOrder, searchQuery]);
   const fetchProducts = async () => {
     let filteredProducts = await getProducts(category, sortOrder, gender);
 
@@ -23,6 +19,10 @@ function Index({ products }) {
 
     setDisplayedProducts(filteredProducts);
   };
+  useEffect(() => {
+    fetchProducts();
+  }, [category, sortOrder, searchQuery]);
+  
   const debouncedFetch = debounce(fetchProducts, 300);
   function debounce(func, delay) {
     let inDebounce;
