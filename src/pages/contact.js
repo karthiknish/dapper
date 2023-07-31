@@ -1,11 +1,21 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "ViewContent");
+    }
+  }, []);
+  const handlePixelTrack = () => {
+    if (typeof window !== "undefined" && window.fbq) {
+      window.fbq("track", "Lead");
+    }
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch("/api/contact", {
@@ -21,6 +31,7 @@ function Contact() {
       setName("");
       setEmail("");
       setMessage("");
+      handlePixelTrack();
       setSuccess("Thanks for your Message");
     } else {
       setError(data.error);
