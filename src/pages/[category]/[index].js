@@ -35,7 +35,10 @@ function Index({ product }) {
             <Description className="mt-4" input={product.fields.description} />
             <button
               className="mt-6 bg-yellow-500 p-3 rounded-md text-white hover:bg-yellow-600 focus:outline-none focus:bg-yellow-700 focus:ring-2 focus:ring-yellow-400 focus:ring-opacity-50 transition-all duration-300"
-              onClick={handleAddToCart}
+              onClick={() => {
+                handleAddToCart();
+                fbq("track", "AddToCart");
+              }}
             >
               Add to Cart
             </button>
