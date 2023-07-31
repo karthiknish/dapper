@@ -1,5 +1,5 @@
 import Head from "next/head";
-function Index() {
+function Aboutus() {
   return (
     <>
       <Head>
@@ -51,4 +51,4 @@ function Index() {
   );
 }
 
-export default Index;
+export default Aboutus;
