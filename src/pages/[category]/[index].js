@@ -20,7 +20,7 @@ function Index({ product }) {
       <div className="bg-gray-100 min-h-screen flex flex-col items-center">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full py-4 flex flex-col md:flex-row gap-8">
           <img
-            className="w-full h-full object-cover rounded-md mb-4 md:mb-0 md:mr-4"
+            className="w-full h-full object-cover max-w-xl rounded-md mb-4 md:mb-0 md:mr-4"
             src={product.fields.image}
             alt={product.fields.title}
           />
