@@ -209,6 +209,11 @@ export default function Home({ products }) {
                 )
             )}
           </div>
+
+          <Link className="text-3xl flex items-center mt-10" href="/search">
+            All Products
+            <FaArrowRight />
+          </Link>
         </main>
       </div>
       <div className="bg-gray-100 p-6 rounded-md shadow-md w-full  mx-auto">
