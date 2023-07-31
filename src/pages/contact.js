@@ -1,6 +1,31 @@
 import Head from "next/head";
-
+import { useState } from "react";
 function Contact() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
+  const [success, setSuccess] = useState("");
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      body: JSON.stringify({ name, email, message }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (data.success) {
+      setName("");
+      setEmail("");
+      setMessage("");
+      setSuccess("Thanks for your Message");
+    } else {
+      console.error(data.error);
+    }
+  };
+
   return (
     <>
       <Head>
@@ -18,6 +43,8 @@ function Contact() {
                 type="text"
                 className="w-full p-2 border rounded-md"
                 placeholder="Your Name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
               />
             </div>
 
@@ -27,6 +54,8 @@ function Contact() {
                 type="email"
                 className="w-full p-2 border rounded-md"
                 placeholder="Your Email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -36,16 +65,20 @@ function Contact() {
                 rows="4"
                 className="w-full p-2 border rounded-md"
                 placeholder="Your Message"
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
               ></textarea>
             </div>
 
             <button
               type="submit"
+              onClick={handleSubmit}
               className="w-full p-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 focus:outline-none focus:bg-blue-700"
             >
               Submit
             </button>
           </form>
+          <p className="text-green-500 mt-2">{success}</p>
         </div>
       </div>
     </>
