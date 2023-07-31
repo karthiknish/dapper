@@ -28,25 +28,25 @@ function Aboutus() {
             take inspiration from runways around the world to create exclusive
           </p>
         </div>
+        <p className="p-4">
+          Dapr collections full of bold prints, vivid colors and flattering
+          silhouettes. We release new, limited-edition pieces each month so our
+          customers always have access to what's hot right now. From business
+          casual to night-on-the-town attire, Dapr has stylish options for every
+          occasion. We pride ourselves on offering the same high-quality items
+          found in designer boutiques at a fraction of the price. Every product
+          we sell goes through rigorous inspection and testing to ensure it
+          meets our strict standards. Based in Los Angeles, Dapr was founded by
+          best friends and fashion enthusiasts James Holt and Eva Chen. James
+          and Eva travel the world in search of the latest trends and the best
+          materials to incorporate into Dapr designs. Their goal is to make
+          shopping an enjoyable and rewarding experience by providing
+          exceptional customer service and an easy, intuitive website. Dapr is
+          dedicated to empowering customers to look and feel their best every
+          day. Browse our collections today to discover fashionable finds
+          effortlessly tailored to your personal style.
+        </p>
       </div>
-      <p className="p-4">
-        Dapr collections full of bold prints, vivid colors and flattering
-        silhouettes. We release new, limited-edition pieces each month so our
-        customers always have access to what's hot right now. From business
-        casual to night-on-the-town attire, Dapr has stylish options for every
-        occasion. We pride ourselves on offering the same high-quality items
-        found in designer boutiques at a fraction of the price. Every product we
-        sell goes through rigorous inspection and testing to ensure it meets our
-        strict standards. Based in Los Angeles, Dapr was founded by best friends
-        and fashion enthusiasts James Holt and Eva Chen. James and Eva travel
-        the world in search of the latest trends and the best materials to
-        incorporate into Dapr designs. Their goal is to make shopping an
-        enjoyable and rewarding experience by providing exceptional customer
-        service and an easy, intuitive website. Dapr is dedicated to empowering
-        customers to look and feel their best every day. Browse our collections
-        today to discover fashionable finds effortlessly tailored to your
-        personal style.
-      </p>
     </>
   );
 }
