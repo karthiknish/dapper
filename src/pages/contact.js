@@ -5,6 +5,7 @@ function Contact() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [success, setSuccess] = useState("");
+  const [error, setError] = useState("");
   const handleSubmit = async (e) => {
     e.preventDefault();
     const response = await fetch("/api/contact", {
@@ -22,7 +23,7 @@ function Contact() {
       setMessage("");
       setSuccess("Thanks for your Message");
     } else {
-      console.error(data.error);
+      setError(data.error);
     }
   };
 
@@ -79,6 +80,7 @@ function Contact() {
             </button>
           </form>
           <p className="text-green-500 mt-2">{success}</p>
+          <p className="text-red-500 mt-2">{error}</p>
         </div>
       </div>
     </>

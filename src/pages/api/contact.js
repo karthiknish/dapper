@@ -11,6 +11,15 @@ export default async function handler(req, res) {
   if (!name || !email || !message) {
     return res.status(400).json({ error: "All fields are required" });
   }
+  const validateEmail = (email) => {
+    return !!email.match(
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
+    );
+  };
+
+  if (!validateEmail(email)) {
+    return res.status(400).json({ error: "Invalid email format" });
+  }
   try {
     const contact = new Contact({ name, email, message });
     await contact.save();
