@@ -14,7 +14,7 @@ function Index() {
           />
         </div>
         <div className="md:w-1/3 p-4">
-          <p className="text-gray-700">
+          {/* <p className="text-gray-700">
             Dapr is a modern fashion brand that offers stylish and comfortable
             clothing, shoes and accessories for men and women. Founded in 2018,
             Dapr aims to make the latest fashion trends accessible to everyone
@@ -26,10 +26,10 @@ function Index() {
             everyday wear and feature on-trend colors and designs. At Dapr, we
             believe fashion should be fun and expressive. Our in-house designers
             take inspiration from runways around the world to create exclusive
-          </p>
+          </p> */}
         </div>
       </div>
-      <p className="p-4">
+      {/* <p className="p-4">
         Dapr collections full of bold prints, vivid colors and flattering
         silhouettes. We release new, limited-edition pieces each month so our
         customers always have access to what's hot right now. From business
@@ -46,7 +46,7 @@ function Index() {
         customers to look and feel their best every day. Browse our collections
         today to discover fashionable finds effortlessly tailored to your
         personal style.
-      </p>
+      </p> */}
     </>
   );
 }
