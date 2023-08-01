@@ -51,14 +51,7 @@ function SalesData() {
     };
   }
 
-  const salesData = aggregateSalesData(orders);
-  const categories = [
-    ...new Set(
-      orders.flatMap((order) =>
-        order.cartItems.map((item) => item?.fields?.category[0])
-      )
-    ),
-  ];
+
   let chartData;
   if (viewMode === "category") {
     const salesData = aggregateSalesDataByCategory(orders);
