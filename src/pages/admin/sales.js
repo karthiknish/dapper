@@ -19,10 +19,11 @@ function SalesData() {
       order.cartItems.forEach((item) => {
         const category = item?.fields?.category[0];
         const price = item?.fields?.price;
-        if (salesByCategory[category]) {
-          salesByCategory[category] += price;
+        const genderKey = `${category}-${order.gender}`;
+        if (salesByCategoryAndGender[genderKey]) {
+          salesByCategoryAndGender[genderKey] += price;
         } else {
-          salesByCategory[category] = price;
+          salesByCategoryAndGender[genderKey] = price;
         }
       });
     });
@@ -33,14 +34,34 @@ function SalesData() {
     };
   }
   const salesData = aggregateSalesData(orders);
+  const categories = [
+    ...new Set(
+      orders.flatMap((order) =>
+        order.cartItems.map((item) => item?.fields?.category[0])
+      )
+    ),
+  ];
+  const maleSales = categories.map(
+    (category) => aggregatedData[`${category}-male`] || 0
+  );
+  const femaleSales = categories.map(
+    (category) => aggregatedData[`${category}-female`] || 0
+  );
   const data = {
-    labels: salesData.labels,
+    labels: categories,
     datasets: [
       {
-        label: "Sales ($)",
-        data: salesData.sales,
+        label: "Male Sales ($)",
+        data: maleSales,
         backgroundColor: "rgba(75, 192, 192, 0.2)",
         borderColor: "rgba(75, 192, 192, 1)",
+        borderWidth: 1,
+      },
+      {
+        label: "Female Sales ($)",
+        data: femaleSales,
+        backgroundColor: "rgba(255, 99, 132, 0.2)",
+        borderColor: "rgba(255, 99, 132, 1)",
         borderWidth: 1,
       },
     ],

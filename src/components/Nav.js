@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Router from "next/router";
 import { useState, useEffect } from "react";
-
+import { useRouter } from "next/router";
 import Logo from "../assets/logo.png";
 import {
   AiOutlineMenu,
@@ -13,12 +13,23 @@ import { GoSignOut, GoSignIn } from "react-icons/go";
 function Nav() {
   const [isOpen, setIsOpen] = useState(false);
   const [token, setToken] = useState(null);
-
+  const router = useRouter();
   const signOut = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("email");
     Router.push("/");
   };
+  useEffect(() => {
+    const handleRouteChange = () => {
+      setIsOpen(false);
+    };
+
+    router.events.on("routeChangeStart", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeStart", handleRouteChange);
+    };
+  }, []);
   useEffect(() => {
     const userData = localStorage.getItem("token");
     if (userData) {
