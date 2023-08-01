@@ -4,58 +4,61 @@ import { useState, useEffect } from "react";
 
 Chart.register(...registerables);
 function SalesData() {
-  const [orders, setOrders] = useState([]);
+
+  const[users,setUsers]=useState([])
   const [viewMode, setViewMode] = useState("category");
   useEffect(() => {
     async function loadData() {
-      const response = await fetch("/api/order");
+      const response = await fetch("/api/login");
+
       const data = await response.json();
-      setOrders(data);
+      console.log(data)
+      setUsers(data);
     }
     loadData();
   }, []);
 
-  function aggregateSalesDataByCategory(orders) {
+  function aggregateSalesDataByCategory(users) {
     let salesByCategory = {};
-
-    orders.forEach((order) => {
-      order.cartItems.forEach((item) => {
-        const category = item?.fields?.category[0];
-        const price = item?.fields?.price;
-        if (salesByCategory[category]) {
-          salesByCategory[category] += price;
-        } else {
-          salesByCategory[category] = price;
-        }
+    users.forEach((user) => {
+      user.orders.forEach((order) => {
+        order.cartItems.forEach((item) => {
+          const category = item?.fields?.category[0];
+          const price = item?.fields?.price;
+          if (salesByCategory[category]) {
+            salesByCategory[category] += price;
+          } else {
+            salesByCategory[category] = price;
+          }
+        });
       });
     });
-
     return {
       labels: Object.keys(salesByCategory),
       sales: Object.values(salesByCategory),
-    };
-  }
-  function aggregateSalesDataByGender(orders) {
+    };}
+  function aggregateSalesDataByGender(users) {
     const salesByGender = { male: 0, female: 0 };
-
-    orders.forEach((order) => {
+    users.forEach((user) => {
+      user.orders.forEach((order) => {
       order.cartItems.forEach((item) => {
+        console.log(item.fields)
         const price = item?.fields?.price;
-        salesByGender[item?.fields?.sex] += price;
-      });
+        salesByGender[user?.sex] += price;
+     
     });
-
+  });
+});
     return {
       labels: Object.keys(salesByGender),
       sales: Object.values(salesByGender),
     };
   }
-  function aggregateSalesDataByLocation(orders) {
+  function aggregateSalesDataByLocation(users) {
     let salesByLocation = {};
-
-    orders.forEach((order) => {
+    users.forEach((user) => {
+      user.orders.forEach((order) =>  {    const location = order.city;
       order.cartItems.forEach((item) => {
-        const location = item.city;
         const totalOrderValue = order.cartItems.reduce(
           (sum, item) => sum + item?.fields?.price,
           0
@@ -65,7 +68,7 @@ function SalesData() {
         } else {
           salesByLocation[location] = totalOrderValue;
         }
-      });
+      });   });
     });
 
     return {
@@ -76,7 +79,7 @@ function SalesData() {
 
   let chartData;
   if (viewMode === "category") {
-    const salesData = aggregateSalesDataByCategory(orders);
+    const salesData = aggregateSalesDataByCategory(users);
     chartData = {
       labels: salesData.labels,
       datasets: [
@@ -90,7 +93,7 @@ function SalesData() {
       ],
     };
   } else if (viewMode === "gender") {
-    const salesData = aggregateSalesDataByGender(orders);
+    const salesData = aggregateSalesDataByGender(users);
     chartData = {
       labels: salesData.labels,
       datasets: [
@@ -122,17 +125,17 @@ function SalesData() {
     };
   }
   return (
-    <div>
-      <h2>Sales Data Over Time</h2>
-      <div>
-        <label>
+    <div className="p-4">
+      <h2 className="text-2xl p-2">Sales Data Over Time</h2>
+      <div className="flex gap-4">
+        <label >
           <input
             type="radio"
             value="category"
             checked={viewMode === "category"}
             onChange={() => setViewMode("category")}
           />
-          By Category
+         {' '}Category
         </label>
         <label>
           <input
@@ -141,7 +144,7 @@ function SalesData() {
             checked={viewMode === "gender"}
             onChange={() => setViewMode("gender")}
           />
-          By Gender
+           {' '}Gender
         </label>
         <label>
           <input
@@ -150,7 +153,7 @@ function SalesData() {
             checked={viewMode === "location"}
             onChange={() => setViewMode("location")}
           />
-          By Location
+          {' '}Location
         </label>
       </div>
       <Bar data={chartData} />

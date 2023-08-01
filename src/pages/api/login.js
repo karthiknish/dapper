@@ -29,7 +29,11 @@ export default async function handler(req, res) {
     res.status(200).json({ message: "Logged in successfully!", token, email });
   }else if (req.method === "GET") {
     const { email } = req.query;
-
+    if (!email) {
+    
+      const users = await User.find({}, '-password');  
+      return res.status(200).json(users);
+    }
     if (!email) {
       return res.status(400).json({ message: "Email query parameter is required." });
     }

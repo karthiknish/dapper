@@ -65,8 +65,8 @@ function SalesData() {
   };
 
   return (
-    <div>
-      <h2>Cost-Benefit Analysis Over Time</h2>
+    <div className="p-4">
+      <h2 className="text-2xl p-2">Cost-Benefit Analysis Over Time</h2>
       <Bar data={data} />
     </div>
   );
