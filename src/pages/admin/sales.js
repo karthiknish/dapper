@@ -36,12 +36,12 @@ function SalesData() {
     };
   }
   function aggregateSalesDataByGender(orders) {
-    const salesByGender = {};
+    const salesByGender = { male: 0, female: 0 };
 
     orders.forEach((order) => {
       order.cartItems.forEach((item) => {
         const price = item?.fields?.price;
-        salesByGender[item?.fields?.gender] += price;
+        salesByGender[item?.fields?.sex] += price;
       });
     });
 
@@ -50,7 +50,7 @@ function SalesData() {
       sales: Object.values(salesByGender),
     };
   }
-  function aggregateSalesDataByLocation(users) {
+  function aggregateSalesDataByLocation(orders) {
     let salesByLocation = {};
 
     orders.forEach((order) => {
