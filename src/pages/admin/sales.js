@@ -41,7 +41,7 @@ function SalesData() {
     orders.forEach((order) => {
       order.cartItems.forEach((item) => {
         const price = item?.fields?.price;
-        salesByGender[order.gender] += price;
+        salesByGender[item?.fields?.gender] += price;
       });
     });
 
