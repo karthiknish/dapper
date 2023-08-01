@@ -50,7 +50,29 @@ function SalesData() {
       sales: Object.values(salesByGender),
     };
   }
+  function aggregateSalesDataByLocation(users) {
+    let salesByLocation = {};
 
+    orders.forEach((order) => {
+      order.cartItems.forEach((item) => {
+        const location = item.city;
+        const totalOrderValue = order.cartItems.reduce(
+          (sum, item) => sum + item?.fields?.price,
+          0
+        );
+        if (salesByLocation[location]) {
+          salesByLocation[location] += totalOrderValue;
+        } else {
+          salesByLocation[location] = totalOrderValue;
+        }
+      });
+    });
+
+    return {
+      labels: Object.keys(salesByLocation),
+      sales: Object.values(salesByLocation),
+    };
+  }
 
   let chartData;
   if (viewMode === "category") {
@@ -84,6 +106,20 @@ function SalesData() {
         },
       ],
     };
+  } else if (viewMode === "location") {
+    const salesData = aggregateSalesDataByLocation(users);
+    chartData = {
+      labels: salesData.labels,
+      datasets: [
+        {
+          label: "Sales by Location ($)",
+          data: salesData.sales,
+          backgroundColor: "rgba(153, 102, 255, 0.2)",
+          borderColor: "rgba(153, 102, 255, 1)",
+          borderWidth: 1,
+        },
+      ],
+    };
   }
   return (
     <div>
@@ -106,6 +142,15 @@ function SalesData() {
             onChange={() => setViewMode("gender")}
           />
           By Gender
+        </label>
+        <label>
+          <input
+            type="radio"
+            value="location"
+            checked={viewMode === "location"}
+            onChange={() => setViewMode("location")}
+          />
+          By Location
         </label>
       </div>
       <Bar data={chartData} />
