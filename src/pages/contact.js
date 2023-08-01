@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect } from "react";import {motion} from 'framer-motion'
 function Contact() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -44,7 +44,7 @@ function Contact() {
         <title>Contact Us</title>
       </Head>
 
-      <div className="bg-gray-100 min-h-screen flex items-center justify-center">
+      <motion.div  initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-gray-100 min-h-screen flex items-center justify-center">
         <div className="bg-white p-10 rounded-lg shadow-md w-full max-w-md">
           <h1 className="text-2xl font-bold mb-4">Contact Us</h1>
 
@@ -93,7 +93,7 @@ function Contact() {
           <p className="text-green-500 mt-2">{success}</p>
           <p className="text-red-500 mt-2">{error}</p>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

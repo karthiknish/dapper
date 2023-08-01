@@ -4,7 +4,7 @@ import { getProduct } from "../api/contentful";
 import StarRating from "../../components/Starrating";
 import { addToCart } from "../../util/cart";
 import Description from "@/components/Description";
-
+import { motion } from "framer-motion"
 function Index({ product }) {
   const handleAddToCart = () => {
     addToCart(product);
@@ -17,7 +17,7 @@ function Index({ product }) {
         <title>{product.fields.title}</title>
       </Head>
 
-      <div className="bg-gray-100 min-h-screen flex flex-col items-center">
+      <motion.div initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} className="bg-gray-100 min-h-screen flex flex-col items-center">
         <div className="bg-white p-8 rounded-xl shadow-lg w-full py-4 flex flex-col md:flex-row gap-8">
           <img
             className="w-full h-full object-cover max-w-xl rounded-md mb-4 md:mb-0 md:mr-4"
@@ -44,7 +44,7 @@ function Index({ product }) {
             </button>
           </div>
         </div>
-      </div>
+      </motion.div>
     </>
   );
 }

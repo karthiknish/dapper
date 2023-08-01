@@ -2,6 +2,7 @@ import { getProducts } from "../api/contentful";
 import Link from "next/link";
 import Head from "next/head";
 import { useState, useEffect } from "react";
+import{motion} from 'framer-motion'
 function Index({ products }) {
   const [category, setCategory] = useState("");
   const [sortOrder, setSortOrder] = useState("");
@@ -36,7 +37,7 @@ function Index({ products }) {
       <Head>
         <title>Mens Products</title>
       </Head>
-      <main className="p-6  min-h-screen">
+      <motion.main initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}}  className="p-6  min-h-screen">
         <div className="container mx-auto">
           <input
             type="text"
@@ -129,7 +130,7 @@ function Index({ products }) {
             ))}
           </div>
         </div>
-      </main>
+      </motion.main>
     </>
   );
 }
