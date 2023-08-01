@@ -17,7 +17,8 @@ const switchModeHandler = () => {
 };
 useEffect(() => {
   const token = localStorage.getItem("token");
-  if (token) {
+  const email = localStorage.getItem("email");
+  if (token&&email) {
     Router.push("/");
   }
 }, []);
