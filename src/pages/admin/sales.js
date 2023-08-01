@@ -108,7 +108,7 @@ function SalesData() {
           By Gender
         </label>
       </div>
-      <Bar data={data} />
+      <Bar data={chartData} />
     </div>
   );
 }
