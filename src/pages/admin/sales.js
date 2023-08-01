@@ -36,7 +36,7 @@ function SalesData() {
     };
   }
   function aggregateSalesDataByGender(orders) {
-    const salesByGender = { male: 0, female: 0 };
+    const salesByGender = {};
 
     orders.forEach((order) => {
       order.cartItems.forEach((item) => {
